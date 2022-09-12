@@ -1,0 +1,189 @@
+openapi: 3.0.3
+info:
+  title: hey intern api - OpenAPI 3.0
+  version: 1.0.11
+paths:
+  /purchase:
+    post:
+      summary: 購入時にpostする。
+      requestBody:
+        content:
+          application/json:
+            schema:
+              # "$ref": "#/components/schemas/Purchase"
+              '$ref': '#/components/schemas/UserInfo'
+        required: true
+      responses:
+        '201':
+          description: Created Content
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/Purchase'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+    patch:
+      summary: 購入IDに紐づいた商品の在庫を1減らす
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int64
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/Products'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+
+  /purchase/{purchases_id}:
+    get:
+      summary: 事前決済の現地受けとり情報を取得する
+      parameters:
+        - name: purchases_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful purchases
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/Purchase'
+  /products:
+    post:
+      summary: 商品を登録する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/Products'
+      responses:
+        '201':
+          description: created products
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/Products'
+    get:
+      summary: 商品の一覧取得する
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  '$ref': '#/components/schemas/Products'
+  /onlinestore/allproducts:
+    get:
+      summary: オンラインショップ側の商品一覧を取得する
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  '$ref': '#/components/schemas/Products'
+  /:
+    get:
+      summary: ヘルスチェック
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+
+components:
+  parameters:
+    userId:
+      name: userId
+      in: path
+      required: true
+      description: ユーザーの ID
+      schema:
+        type: integer
+  schemas:
+    UserInfo:
+      type: object
+      description: ユーザー情報
+      properties:
+        name:
+          type: string
+          description: ユーザーの名前
+        address:
+          type: string
+          description: 居住地
+        phone_number:
+          type: string
+          description: 電話番号
+        mail_address:
+          type: string
+          description: メールアドレス
+        product_ids:
+          type: array
+          description: 購入した商品
+          items:
+            type: integer
+    Purchase:
+      type: object
+      description: 購入する
+      allOf:
+        - '$ref': '#/components/schemas/UserInfo'
+        - properties:
+            id:
+              type: integer
+              description: PurchaseのID
+            is_acceptance:
+              type: boolean
+              default: false
+              description: 受け取ったかどうか
+    Products:
+      type: object
+      description: 登録された商品
+      allOf:
+        - '$ref': '#/components/schemas/OnlineStock'
+        - properties:
+            id:
+              type: integer
+              description: 商品のID
+            name:
+              type: string
+              description: 商品の名前
+            price:
+              type: integer
+              description: 商品の値段
+            image_url:
+              type: string
+              description: 商品画像
+    OnlineStock:
+      type: object
+      description: オンライン上の商品の在庫
+      properties:
+        stock_quantity:
+          type: integer
+      required:
+        - name
+        - address
+        - phone_number
+        - mail_address
+        - is_acceptance
