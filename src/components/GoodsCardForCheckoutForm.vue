@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { PropType, ref } from 'vue'
+// @ts-ignore
 import { ItemInfoForCheckoutForm } from '../modules/onlineShop/types/checkout'
 
 const props = defineProps({
