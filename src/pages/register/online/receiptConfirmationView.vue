@@ -4,72 +4,19 @@ import { useRoute, useRouter } from 'vue-router'
 import GoodsCardForReceiveView from '@/components/GoodsCardForReceiveView.vue'
 import ButtonWithLoading from '@/components/ButtonWithLoading.vue'
 import { ONLINE_RECEIVED_VIEW } from '../../../modules/register/constant'
-const route = useRoute()
-const router = useRouter()
-const purchaseId = computed(() => route.params.id)
+import { useReceiptConfirm } from '../../../modules/register/online/viewModels'
 
-const userData = ref([
-  {
-    key: 'name',
-    data: '金本知憲',
-    label: '氏名'
-  },
-  {
-    key: 'id',
-    data: '123456',
-    label: 'ユーザーID: '
-  }
-])
-
-// NOTE: BEから取れる値
-const goodsInfo = ref([
-  {
-    title: '商品名うちわ',
-    count: 1,
-    price: 10000,
-    img: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-    receive: '現地',
-    shopName: 'amazon.com'
-  },
-  {
-    title: '商品名うちわ',
-    count: 1,
-    price: 10000,
-    img: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-    receive: '現地',
-    shopName: 'amazon.com'
-  },
-  {
-    title: '商品名うちわ',
-    count: 1,
-    price: 10000,
-    img: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-    receive: '現地',
-    shopName: 'amazon.com'
-  }
-])
-const isReceivedItems = ref([
-  {
-    isReceived: false
-  },
-  {
-    isReceived: false
-  },
-  {
-    isReceived: false
-  }
-])
-const isReadyToDone = computed(() =>
-  isReceivedItems.value.every(it => it.isReceived)
-)
-const isLoading = ref(false)
-const done = () => {
-  if (!isReadyToDone.value) return
-  isLoading.value = true
-  // POST
-  router.push({ name: 'online-receipt-done' })
-}
+const {
+  purchaseId,
+  userData,
+  goodsInfo,
+  isReceivedItems,
+  isReadyToDone,
+  isLoading,
+  done
+} = useReceiptConfirm()
 </script>
+
 <template>
   <div class="title">
     <h1>{{ ONLINE_RECEIVED_VIEW.TITLE }}</h1>
