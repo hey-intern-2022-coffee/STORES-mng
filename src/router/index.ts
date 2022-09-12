@@ -9,56 +9,6 @@ const routes: RouteRecordRaw[] = [
       )
   },
   {
-    path: '/',
-    component: () =>
-      import(
-        /* webpackChunkName: "online-shop" */ '@/layout/onlineShopsLayout.vue'
-      ),
-    children: [
-      {
-        path: '',
-        name: 'onlineShop',
-        component: () =>
-          import(
-            /* webpackChunkName: "online-shop" */ '@/pages/onlineShop/index.vue'
-          )
-      },
-      {
-        path: 'cart',
-        name: 'shoppingCartView',
-        component: () =>
-          import(
-            /* webpackChunkName: "online-shop" */ '@/pages/onlineShop/shoppingCartView.vue'
-          )
-      },
-      {
-        path: 'checkout',
-        name: 'checkoutView',
-        component: () =>
-          import(
-            /* webpackChunkName: "online-shop" */ '@/pages/onlineShop/checkoutView.vue'
-          )
-      },
-      {
-        path: 'completeCheckout',
-        name: 'completeCheckoutView',
-        component: () =>
-          import(
-            /* webpackChunkName: "online-shop" */ '@/pages/onlineShop/completeCheckoutView.vue'
-          )
-      },
-      {
-        path: '/qr/:purchaseId',
-        name: 'qrCodeView',
-        component: () =>
-          import(
-            /* webpackChunkName: "online-shop" */ '@/pages/onlineShop/qrCodeView.vue'
-          ),
-        props: route => ({ purchaseId: Number(route.params.id) })
-      }
-    ]
-  },
-  {
     path: '/stock-manager',
     component: () =>
       import(
