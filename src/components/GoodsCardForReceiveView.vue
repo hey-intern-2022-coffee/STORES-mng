@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { PropType, ref, watch } from 'vue'
+// @ts-ignore
 import { ItemInfoForCheckoutForm } from '../modules/onlineShop/types/checkout'
 import { Check, Close } from '@element-plus/icons-vue'
 const props = defineProps({

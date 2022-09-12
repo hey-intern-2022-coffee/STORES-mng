@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ButtonWithLoading from '@/components/ButtonWithLoading.vue'
+// @ts-ignore
 import { MENU } from '@/modules/constant'
 
 const router = useRouter()
