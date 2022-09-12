@@ -87,15 +87,16 @@ const {
   margin-bottom: 1%;
 }
 .user-infos {
-  width: 30vw;
+  width: 35vw;
   /* align-items: flex-start; */
   /* justify-items: start; */
 }
 .table {
   /* margin-bottom: auto; */
+  overflow-wrap: break-word;
 }
 .goods-infos {
-  width: 70vw;
+  width: 65vw;
 }
 .each-goods {
 }
@@ -107,6 +108,7 @@ th,
 td {
   padding: 5px;
   /* border: 1px solid #333; */
+  overflow-wrap: break-word;
 }
 
 .btn {
