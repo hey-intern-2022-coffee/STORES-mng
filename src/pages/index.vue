@@ -17,7 +17,7 @@ const isLoading = ref({ online: false, offline: false })
 <template>
   <div class="wrapper">
     <div class="titles">
-      <h1>register</h1>
+      <!-- <h1>register</h1> -->
     </div>
     <div class="btns">
       <div>
