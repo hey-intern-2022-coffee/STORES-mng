@@ -6,26 +6,12 @@ import { APP_NAME } from '../modules/constant'
 const router = useRouter()
 const route = useRoute()
 
-// const isShowNav = computed(
-//   () =>
-//     !(
-//       [route.fullPath].includes('/register') ||
-//       [route.fullPath].includes('/register/')
-//     )
-// )
-// const goBack = () => router.go(-1)
-
 const goHomePage = () => router.push({ name: 'home' })
 </script>
 <template>
   <div>
     <div class="header">
-      <div class="nav">
-        <!-- <template v-if="isShowNav">
-          <span> &lt; </span>
-          <span @pointerup="goBack" class="go-back">戻る</span>
-        </template> -->
-      </div>
+      <div class="nav"></div>
       <div @click="goHomePage" class="title-content">
         <span class="text-large font-600 mr-3"> {{ APP_NAME }} </span>
       </div>
@@ -66,5 +52,16 @@ const goHomePage = () => router.push({ name: 'home' })
 }
 .credit {
   width: 20vw;
+}
+@media screen and (max-width: 768px) {
+  .nav {
+    width: 15vw;
+  }
+  .title-content {
+    width: 50vw;
+  }
+  .credit {
+    width: 15vw;
+  }
 }
 </style>
