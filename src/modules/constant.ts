@@ -1,5 +1,4 @@
 export const APP_NAME = 'STORESマネージャー'
-
 export const checkoutInfosEnum = {
   zipCode: 'zipCode',
   address: 'address',
