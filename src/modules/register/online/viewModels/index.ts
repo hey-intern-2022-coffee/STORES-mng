@@ -1,10 +1,12 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { apiClient } from '../../../../repos'
+import { useFetch } from '../../../utils/api'
 
 export const useReceiptConfirm = () => {
   const route = useRoute()
   const router = useRouter()
-  const purchaseId = computed(() => route.params.id)
+  const purchaseId = computed(() => Number(route.params.purchaseId)) // FIXME: type check
 
   const userData = ref([
     {
@@ -18,7 +20,6 @@ export const useReceiptConfirm = () => {
       label: 'ユーザーID: '
     }
   ])
-
   // NOTE: BEから取れる値
   const goodsInfo = ref([
     {
@@ -61,12 +62,25 @@ export const useReceiptConfirm = () => {
     isReceivedItems.value.every(it => it.isReceived)
   )
   const isLoading = ref(false)
-  const done = () => {
+
+  const done = async () => {
     if (!isReadyToDone.value) return
+    console.debug(purchaseId.value)
+    if (purchaseId.value)
+      await apiClient.purchase.put({ body: purchaseId.value })
     isLoading.value = true
     // POST
     router.push({ name: 'online-receipt-done' })
   }
+
+  /** fetch products */
+  useFetch(async () => {
+    const products = await apiClient.purchase
+      ._purchases_id(purchaseId.value)
+      .get()
+    console.debug(products)
+  })
+
   return {
     purchaseId,
     userData,
