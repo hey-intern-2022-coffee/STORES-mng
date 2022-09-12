@@ -6,14 +6,7 @@ import { APP_NAME } from '../modules/register/constant'
 const router = useRouter()
 const route = useRoute()
 console.debug(route.path)
-const isShowNav = computed(
-  () =>
-    !(
-      [route.fullPath].includes('/register') ||
-      [route.fullPath].includes('/register/')
-    )
-)
-const goBack = () => router.go(-1)
+const goBack = () => router.push({ name: 'home' })
 
 const goHomePage = () => router.push({ name: 'register' })
 </script>
@@ -21,10 +14,8 @@ const goHomePage = () => router.push({ name: 'register' })
   <div>
     <div class="header">
       <div class="nav">
-        <template v-if="isShowNav">
-          <span> &lt; </span>
-          <span @pointerup="goBack" class="go-back">戻る</span>
-        </template>
+        <span> &lt; </span>
+        <span @pointerup="goBack" class="go-back">戻る</span>
       </div>
       <div @click="goHomePage" class="title-content">
         <span class="text-large font-600 mr-3"> {{ APP_NAME }} </span>
