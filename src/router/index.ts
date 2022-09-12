@@ -9,6 +9,19 @@ const routes: RouteRecordRaw[] = [
       )
   },
   {
+    path: '/',
+    component: () =>
+      import(/* webpackChunkName: "index" */ '@/layout/defaultLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'home',
+        component: () =>
+          import(/* webpackChunkName: "index" */ '@/pages/index.vue')
+      }
+    ]
+  },
+  {
     path: '/stock-manager',
     component: () =>
       import(
