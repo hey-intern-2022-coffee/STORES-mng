@@ -18,32 +18,34 @@ export const useReceiptConfirm = () => {
   >([
     {
       key: 'name',
-      data: '金本知憲',
+      data: 'データがありません',
       label: '氏名: '
     },
     {
       key: 'purchaseId',
-      data: '123456',
+      data: 'データがありません',
       label: '購入ID: '
     },
     {
       key: 'email',
-      data: 'hoge@ddmail.com',
+      data: 'データがありません',
       label: 'email: '
     }
   ])
   // NOTE: BEから取れる値
-  const goodsInfo = ref([
+  const goodsInfo = ref<
     {
-      title: '商品名うちわ',
-      count: 1,
-      price: 10000,
-      image_url:
-        'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-      receive: '現地',
-      shopName: 'amazon.com'
-    }
-  ])
+      title: string
+      count: number
+      price: number
+      image_url: string
+      receive: string
+      shopName: string
+    }[]
+  >([])
+  /**
+   * @args: API response
+   */
   const apiResponseToRef = (item: Purchase) => {
     // FIXME: types
     const userinfoFromResponse: any = {
@@ -51,26 +53,31 @@ export const useReceiptConfirm = () => {
       purchaseId: item.id,
       email: item.mail_address
     }
+    // NOTE: 左側表示のユーザーデータ
     userData.value.map(it => {
       it.data = userinfoFromResponse[it.key]
     })
     const goodsInfo = item.purchases_products?.map(it => ({
       productId: it.product_id
     }))
-    // FIXME: productIdを投げてproduct情報を返すGETのアクセスパターンが欲しい
+    return goodsInfo
   }
 
   // FIXME: responseの購入物品種類数に応じて配列数は変化
-  const isReceivedItems = ref(
-    [...new Array(goodsInfo.value.length)].map(
-      it =>
-        (it = {
-          isReceived: false
-        })
-    )
-  )
-  const isReadyToDone = computed(() =>
-    isReceivedItems.value.every(it => it.isReceived)
+  const isReceivedItems = ref<
+    {
+      isReceived: false
+    }[]
+  >([
+    {
+      isReceived: false
+    }
+  ])
+
+  const isReadyToDone = computed(
+    () =>
+      isReceivedItems.value.length &&
+      isReceivedItems.value.every(it => it.isReceived)
   )
   const isLoading = ref(false)
 
@@ -78,7 +85,10 @@ export const useReceiptConfirm = () => {
     if (!isReadyToDone.value) return
     if (!purchaseId.value) return
     try {
-      await apiClient.purchase.put({ body: purchaseId.value })
+      await apiClient.purchase.patch({ body: { id: purchaseId.value } })
+      await apiClient.purchase.delivered.patch({
+        body: { id: purchaseId.value }
+      })
     } catch (e) {
       console.error(e)
     }
@@ -92,8 +102,24 @@ export const useReceiptConfirm = () => {
       ._purchases_id(purchaseId.value)
       .get()
     console.debug(products)
-    apiResponseToRef(products.body)
-    // userData.value =
+    const goodsIds = apiResponseToRef(products.body)
+    // FIXME: productIdを投げてproduct情報を返すGETのアクセスパターンが欲しい
+    if (!goodsIds) return
+    for (let i = 0; i < goodsIds?.length; i++) {
+      const res = await apiClient.products._id(1).get()
+      goodsInfo.value.push({
+        title: res.body.name,
+        count: 1,
+        price: res.body.price ?? 0,
+        image_url: res.body.image_url ?? '',
+        receive: '現地',
+        shopName: '決め打ち.com'
+      })
+    }
+    // FIXME: ロジック分離
+    isReceivedItems.value = [...new Array(goodsInfo.value.length)].map(it => ({
+      isReceived: false
+    }))
   })
 
   return {
