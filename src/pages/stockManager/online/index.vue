@@ -1,16 +1,19 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { OnlineProducts } from '../../../lib/@types'
+import { useFetch } from '../../../modules/utils/api'
+import { apiClient } from '../../../repos/index'
+
 const handleClick = () => {
   console.log('click')
 }
 
-const tableData = [
-  {
-    name: '商品名1',
-    price: 1000,
-    image_url: 'https://hogehuga.com',
-    stocks: 10
-  }
-]
+const tableData = ref<OnlineProducts[]>()
+useFetch(async () => {
+  const res = await apiClient.onlinestore.allproducts.get()
+  console.debug(res.body)
+  tableData.value = res.body
+})
 </script>
 <template>
   <div>online stock manager</div>

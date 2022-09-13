@@ -1,16 +1,24 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useFetch } from '../../../modules/utils/api'
+import { apiClient } from '../../../repos'
+
 const handleClick = () => {
   console.log('click')
 }
 
-const tableData = [
+const tableData = ref([
   {
     name: '商品名1',
     price: 1000,
     image_url: 'https://hogehuga.com',
     stocks: 10
   }
-]
+])
+useFetch(async () => {
+  const res = await apiClient.onlinestore.allproducts.get()
+  console.debug(res.body)
+})
 </script>
 <template>
   <div>offline stock manager</div>
