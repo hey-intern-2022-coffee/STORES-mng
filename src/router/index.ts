@@ -109,7 +109,7 @@ const routes: RouteRecordRaw[] = [
     path: '/:pathMatch(.*)*',
     name: 'NotFoundError',
     component: () =>
-      import(/* webpackChunkName: "not-found" */ '@/pages/NotFound.vue')
+      import(/* webpackChunkName: "not-found" */ '@/pages/notFound.vue')
   }
 ]
 
