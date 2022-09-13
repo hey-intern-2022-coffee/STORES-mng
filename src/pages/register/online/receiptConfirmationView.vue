@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import GoodsCardForReceiveView from '@/components/GoodsCardForReceiveView.vue'
 import ButtonWithLoading from '@/components/ButtonWithLoading.vue'
 import { ONLINE_RECEIVED_VIEW } from '../../../modules/register/constant'
-import { useReceiptConfirm } from '../../../modules/register/online/viewModels'
+import { useReceiptConfirm } from '../../../modules/register/online/viewModels/confirm'
 
 const {
   purchaseId,
