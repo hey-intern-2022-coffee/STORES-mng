@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth', {
       this.authenticated = true
       this.reAuth = false // falseにしておく
     },
-    setReAuth() {
+    setReAuthRequired() {
       // 再認証時はこちら。
       this.authenticated = false
       this.reAuth = true

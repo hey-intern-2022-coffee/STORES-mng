@@ -13,6 +13,7 @@ export const useAuthentication = () => {
   const parser = (value: string) => value.replace(/\$\s?|(,*)/g, '')
   const store = useAuthStore()
   const router = useRouter()
+  const isInvalids = ref({ name: false, pass: false })
   const auth = () => {
     const isValidNameOrId =
       import.meta.env.VITE_USER_ID == userInfo.value.nameOrId
@@ -21,6 +22,8 @@ export const useAuthentication = () => {
       store.setIsAuthenticated() // 認証済
       router.push({ name: 'home' })
     }
+    isInvalids.value.name = isValidNameOrId ? false : true
+    isInvalids.value.pass = isValidPass ? false : true
   }
-  return { userInfo, formatter, parser, auth, isLoading }
+  return { userInfo, formatter, parser, auth, isLoading, isInvalids }
 }
