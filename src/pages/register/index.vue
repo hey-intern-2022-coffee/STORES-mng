@@ -58,9 +58,5 @@ const isLoading = ref({ online: false, offline: false })
 }
 .wrapper {
   height: 80vh;
-  /* display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: stretch; */
 }
 </style>
