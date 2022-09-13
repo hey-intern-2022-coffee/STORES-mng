@@ -27,7 +27,7 @@ const props = defineProps({
 const value = ref('')
 props.vals.model = computed(() => value.value)
 const num = ref({
-  count: 0,
+  count: 1,
   max: 10
 })
 props.vals.count = computed(() => num.value.count)

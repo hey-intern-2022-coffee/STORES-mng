@@ -9,24 +9,13 @@ const {
   inputValues,
   increaseElemOfInputValues,
   increaseCount,
-  setLengthOfBottomIncrements,
   isAbleToIncrease,
   delColumn,
   checkout,
-  isLoading
+  isLoading,
+  dialogVisible,
+  handleClose
 } = useOfflinePos()
-
-onUpdated(() => {
-  // setLengthOfBottomIncrements()
-  console.debug(
-    inputValues.value,
-    inputValues.value[0].model,
-    inputValues.value[0].count
-  )
-})
-onMounted(() => {
-  // setLengthOfBottomIncrements()
-})
 </script>
 <template>
   <div>
@@ -55,6 +44,21 @@ onMounted(() => {
         :is-loading="isLoading"
         class="btn"
       />
+    </div>
+    <div class="dialog">
+      <el-dialog
+        v-model="dialogVisible"
+        title="POSレジ"
+        width="30%"
+        :before-close="handleClose"
+      >
+        <span>商品が購入されました。</span>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button type="primary" @click="handleClose">完了</el-button>
+          </span>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
