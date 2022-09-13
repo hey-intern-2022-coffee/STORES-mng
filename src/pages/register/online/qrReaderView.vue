@@ -10,7 +10,8 @@ const {
   isReadyToGoBtnColor,
   autoPushToConfirmationView,
   pushToConfirmationView,
-  isLoadingToGoConfirmView
+  isLoadingToGoConfirmView,
+  pushToConfirmationViewByInputs
 } = useQrReader()
 </script>
 
@@ -43,7 +44,7 @@ const {
       <div class="btn-with-loading">
         <ButtonWithLoading
           :text="'次へ'"
-          :click-method="pushToConfirmationView"
+          :click-method="pushToConfirmationViewByInputs"
           :custom-style="'width: 50vw;height: auto;'"
           :is-loading="isLoadingToGoConfirmView"
           class="btn"

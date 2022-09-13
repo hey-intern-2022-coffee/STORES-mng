@@ -1,8 +1,7 @@
 import jsQR from 'jsqr'
 import { computed, onMounted, ref } from 'vue'
-import { createRouterMatcher, useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
-import { getBaseUri } from '../model'
 export const useQrReader = () => {
   const purchaseId = ref('')
   const isLoading = ref(true)
@@ -82,6 +81,15 @@ export const useQrReader = () => {
       requestAnimationFrame(tick)
     }
   })
+  const pushToConfirmationViewByInputs = () => {
+    if (!purchaseId.value) return
+    isLoadingToGoConfirmView.value = true
+    router.push({
+      name: 'online-confirm-receipt',
+      params: { purchaseId: purchaseId.value }
+    })
+    // window.open(url) // NOTE: '_blank'しない。
+  }
 
   const isLoadingToGoConfirmView = ref(false)
   return {
@@ -91,6 +99,7 @@ export const useQrReader = () => {
     isReadyToGoBtnColor,
     autoPushToConfirmationView,
     pushToConfirmationView,
-    isLoadingToGoConfirmView
+    isLoadingToGoConfirmView,
+    pushToConfirmationViewByInputs
   }
 }
