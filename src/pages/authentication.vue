@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useAuthentication } from '../modules/authentication'
+import ButtonWithLoading from '@/components/ButtonWithLoading.vue'
 
-const userInfo = ref({
-  nameOrId: '',
-  pass: ''
-})
-const formatter = (value: string) => value
-// `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-const parser = (value: string) => value.replace(/\$\s?|(,*)/g, '')
+const { userInfo, formatter, parser, auth, isLoading } = useAuthentication()
 </script>
 
 <template>
@@ -17,9 +12,8 @@ const parser = (value: string) => value.replace(/\$\s?|(,*)/g, '')
     <el-input
       id="userId"
       v-model="userInfo.nameOrId"
+      type="id"
       placeholder="ユーザーID"
-      :formatter="formatter"
-      :parser="parser"
     />
     <label for="userPass"> パスワード： </label>
     <el-input
@@ -28,6 +22,16 @@ const parser = (value: string) => value.replace(/\$\s?|(,*)/g, '')
       type="password"
       placeholder="パスワード"
       show-password
+      @keypress:enter="auth"
+    />
+  </div>
+  <div>
+    <ButtonWithLoading
+      :text="'認証'"
+      :click-method="auth"
+      :custom-style="'width: 50vw;height: auto;'"
+      :is-loading="isLoading"
+      class="btn"
     />
   </div>
 </template>
