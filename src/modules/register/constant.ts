@@ -18,3 +18,10 @@ export const ONLINE_RECEIVED_DONE = {
 
   CONTENT: '商品の受け渡しが完了しました。'
 }
+
+export const QR_READER = {
+  LOADING_MESSAGE: 'ロード中...',
+  ANNOTATION: `「事前決済受け取り用QRコード」を
+  はっきりと写してください。
+  自動で受け取り受付画面に遷移します。`
+}
