@@ -32,6 +32,10 @@ const {
         <el-table-column prop="image_url" label="画像" />
         <el-table-column prop="online_stock.stock_quantity" label="在庫数" />
         <el-table-column prop="online_stock.sold_quantity" label="売上数" />
+        <el-table-column
+          prop="online_stock.delivered_quantity"
+          label="未受け渡し数"
+        />
         <el-table-column fixed="right" label="">
           <template #default>
             <el-button link type="primary" size="small" @click="() => false"
