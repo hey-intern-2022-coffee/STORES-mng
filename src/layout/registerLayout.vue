@@ -5,8 +5,8 @@ import { APP_NAME } from '../modules/register/constant'
 
 const router = useRouter()
 const route = useRoute()
-console.debug(route.path)
-const goBack = () => router.push({ name: 'home' })
+
+const goBack = () => router.go(-1)
 
 const goHomePage = () => router.push({ name: 'register' })
 </script>

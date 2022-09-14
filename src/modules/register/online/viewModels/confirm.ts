@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Purchase } from '../../../../lib/@types'
+
 import { apiClient } from '../../../../repos'
 import { useFetch } from '../../../utils/api'
 
@@ -101,12 +102,14 @@ export const useReceiptConfirm = () => {
     const products = await apiClient.purchase
       ._purchases_id(purchaseId.value)
       .get()
-    console.debug(products)
+
     const goodsIds = apiResponseToRef(products.body)
     // FIXME: productIdを投げてproduct情報を返すGETのアクセスパターンが欲しい
     if (!goodsIds) return
     for (let i = 0; i < goodsIds?.length; i++) {
-      const res = await apiClient.products._id(1).get()
+      const res = await apiClient.products
+        ._product_id(Number(goodsIds[i].productId))
+        .get()
       goodsInfo.value.push({
         title: res.body.name,
         count: 1,
