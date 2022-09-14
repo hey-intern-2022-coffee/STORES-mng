@@ -91,6 +91,7 @@ paths:
           application/json:
             schema:
               '$ref': '#/components/schemas/OnlineProducts'
+        required: true
       responses:
         '201':
           description: created products

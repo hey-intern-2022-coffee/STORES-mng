@@ -1,4 +1,4 @@
-import { Ref, ref } from 'vue'
+import { ref } from 'vue'
 import { OnlineProducts } from '../../../../lib/@types'
 import { apiClient } from '../../../../repos'
 import { useFetch } from '../../../utils/api'
@@ -53,7 +53,14 @@ export const useOnlineStockManager = () => {
   const addGoods = async (arg: OnlineProducts) => {
     try {
       await apiClient.products.post({
-        body: JSON.parse(JSON.stringify(arg))
+        body: {
+          name: arg.name,
+          price: Number(arg.price),
+          image_url: arg.image_url,
+          online_stock: {
+            stock_quantity: Number(arg.online_stock?.stock_quantity) ?? 1
+          }
+        }
       })
     } catch (e) {
       console.error(e)
