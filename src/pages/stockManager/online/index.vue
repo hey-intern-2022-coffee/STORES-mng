@@ -31,6 +31,7 @@ const {
         <el-table-column prop="price" label="値段" />
         <el-table-column prop="image_url" label="画像" />
         <el-table-column prop="online_stock.stock_quantity" label="在庫数" />
+        <el-table-column prop="online_stock.sold_quantity" label="売上数" />
         <el-table-column fixed="right" label="">
           <template #default>
             <el-button link type="primary" size="small" @click="() => false"
@@ -45,7 +46,6 @@ const {
       <el-dialog
         v-model="dialogVisible"
         title="在庫管理: 商品を追加"
-        width="30%"
         :before-close="cancelAddGoods"
       >
         <el-form :model="form">
