@@ -29,24 +29,11 @@ const props = defineProps({
         :key="item.id"
         @click="props.toPath(item.pathName)"
         class="btm-nav-btn"
+        :class="{ 'active-btn': isActive(item.pathName) }"
       >
-        <!-- <img
-          v-show="isActive(item.pathName)"
-          :alt="`${item.label}ページへ遷移`"
-        /> -->
-        <!-- :src="item.activeIconSrc" -->
+        <!-- FIXME: アイコンが欲しい -->
         <div
-          v-if="isActive(item.pathName)"
-          class="btm-nav-label _label font-bold text-dark-blue"
-          :class="{
-            'text-opacity-40': !isActive(item.pathName)
-          }"
-        >
-          {{ item.label }}
-        </div>
-        <div
-          v-else
-          class="btm-nav-label _label font-bold text-dark-blue"
+          class="btm-nav-label"
           :class="{
             'text-opacity-40': !isActive(item.pathName)
           }"
@@ -63,6 +50,17 @@ const props = defineProps({
 }
 .btm-nav-btn {
   width: 33.3333vw;
-  height: 4.5vh;
+  height: 7vh;
+  background-color: rgba(171, 199, 255, 0.3);
+  border: 0;
+}
+.active-btn {
+  background-color: rgba(171, 199, 255, 1);
+}
+
+@media screen and (max-width: 460px) {
+  .btm-nav-btn {
+    height: 10vh;
+  }
 }
 </style>

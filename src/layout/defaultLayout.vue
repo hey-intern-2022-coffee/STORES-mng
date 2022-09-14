@@ -55,13 +55,13 @@ const goHomePage = () => router.push({ name: 'home' })
 }
 @media screen and (max-width: 768px) {
   .nav {
-    width: 15vw;
+    width: 17vw;
   }
   .title-content {
-    width: 50vw;
+    width: 65vw;
   }
   .credit {
-    width: 15vw;
+    width: 17vw;
   }
 }
 </style>

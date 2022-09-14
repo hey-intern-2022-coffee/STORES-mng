@@ -58,4 +58,15 @@ const goHomePage = () => router.push({ name: 'online-offline' })
 .credit {
   width: 20vw;
 }
+@media screen and (max-width: 768px) {
+  .nav {
+    width: 16vw;
+  }
+  .title-content {
+    width: 53vw;
+  }
+  .credit {
+    width: 16vw;
+  }
+}
 </style>

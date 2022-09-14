@@ -41,6 +41,7 @@ const toOffline = () => {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  height: 80vh;
 }
 .btn-wrapper {
   margin: 1rem;
