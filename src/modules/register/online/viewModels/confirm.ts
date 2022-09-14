@@ -101,7 +101,7 @@ export const useReceiptConfirm = () => {
     const products = await apiClient.purchase
       ._purchases_id(purchaseId.value)
       .get()
-    console.debug(products)
+
     const goodsIds = apiResponseToRef(products.body)
     // FIXME: productIdを投げてproduct情報を返すGETのアクセスパターンが欲しい
     if (!goodsIds) return

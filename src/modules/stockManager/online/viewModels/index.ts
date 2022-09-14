@@ -1,30 +1,38 @@
-import { ref } from 'vue'
+import { Ref, ref } from 'vue'
 import { OnlineProducts } from '../../../../lib/@types'
 import { apiClient } from '../../../../repos'
 import { useFetch } from '../../../utils/api'
+import { Annotation } from '../../types'
+import { initAnnotation, initForm, validation } from '../models'
 
 export const useOnlineStockManager = () => {
+  const tableData = ref<OnlineProducts[]>()
   const dialogVisible = ref(false)
   const openEditDialog = () => {
     dialogVisible.value = true
   }
 
-  // 追加
-  const closeEditDialog = () => {
-    initAnnotation()
-    console.debug(validation(), annotation.value)
-    if (!validation()) return
+  const sendGoodsInfo = async () => {
     //追加する
-    initForm()
-    dialogVisible.value = false
+    await addGoods(form.value)
+  }
+
+  // 追加
+  const closeEditDialog = async () => {
+    const { isShowAnnotations, isValid } = validation(form.value)
+    annotation.value = isShowAnnotations
+    if (!isValid) return // validation
+    await sendGoodsInfo()
+    form.value = initForm() // 送信後にformをクリア
+    dialogVisible.value = false // Dialogを閉じる
+    fetchAllGoods() // データを更新する
   }
   const cancelAddGoods = () => {
-    initAnnotation()
+    annotation.value = initAnnotation()
     dialogVisible.value = false
   }
-  const form = ref<
-    Pick<OnlineProducts, 'name' | 'price' | 'image_url' | 'online_stock'>
-  >({
+
+  const form = ref<OnlineProducts>({
     name: '',
     price: 0,
     image_url: '',
@@ -32,53 +40,35 @@ export const useOnlineStockManager = () => {
       stock_quantity: 0
     }
   })
-  const initForm = () => {
-    form.value = {
-      name: '',
-      price: 0,
-      image_url: '',
-      online_stock: {
-        stock_quantity: 0
-      }
-    }
-  }
-  const annotation = ref<
-    Record<
-      keyof Pick<
-        OnlineProducts,
-        'name' | 'price' | 'image_url' | 'online_stock'
-      >,
-      boolean
-    >
-  >({
+
+  const annotation = ref<Annotation>({
     name: false,
     price: false,
     image_url: false,
     online_stock: false // FIXME: 型修正(本当はネストした中でboolを持ちたい)
   })
-  const initAnnotation = () => {
-    annotation.value = {
-      name: false,
-      price: false,
-      image_url: false,
-      online_stock: false // FIXME: 型修正(本当はネストした中でboolを持ちたい)
-    }
-  }
-  const validation = () => {
-    if (!form.value.name.length) annotation.value.name = true
-    if (!form.value.price) annotation.value.price = true
-    if (!form.value.image_url?.length) annotation.value.image_url = true
-    if (!form.value.online_stock?.stock_quantity)
-      annotation.value.online_stock = true
-    return !Object.values(annotation.value).some(it => it)
-  }
 
   const formLabelWidth = '140px'
 
-  const tableData = ref<OnlineProducts[]>()
+  const addGoods = async (arg: OnlineProducts) => {
+    try {
+      await apiClient.products.post({
+        body: JSON.parse(JSON.stringify(arg))
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  const fetchAllGoods = async () => {
+    try {
+      const res = await apiClient.onlinestore.allproducts.get()
+      tableData.value = res.body
+    } catch (e) {
+      console.error(e)
+    }
+  }
   useFetch(async () => {
-    const res = await apiClient.onlinestore.allproducts.get()
-    tableData.value = res.body
+    await fetchAllGoods()
   })
 
   return {

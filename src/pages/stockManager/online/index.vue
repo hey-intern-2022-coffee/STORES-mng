@@ -46,7 +46,7 @@ const {
         v-model="dialogVisible"
         title="在庫管理: 商品を追加"
         width="30%"
-        :before-close="closeEditDialog"
+        :before-close="cancelAddGoods"
       >
         <el-form :model="form">
           <el-form-item label="商品名" :label-width="formLabelWidth">

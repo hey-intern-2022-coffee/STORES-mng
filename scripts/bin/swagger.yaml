@@ -109,11 +109,26 @@ paths:
                 type: array
                 items:
                   '$ref': '#/components/schemas/OnlineProducts'
-  /products/{id}:
+    put:
+      summary: 商品の編集をする
+      requestBody:
+        content:
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/OnlineProducts'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                '$ref': '#/components/schemas/OnlineProducts'
+  /products/{product_id}:
     get:
       summary: 商品をIDで取得する
       parameters:
-        - name: purchases_id
+        - name: product_id
           in: path
           required: true
           schema:
@@ -126,6 +141,18 @@ paths:
             application/json:
               schema:
                 '$ref': '#/components/schemas/OnlineProducts'
+    delete:
+      summary: 商品IDで削除する
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: no content
   /onlinestore/allproducts:
     get:
       summary: オンラインショップ側の商品一覧を取得する
