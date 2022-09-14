@@ -86,7 +86,7 @@ export const useReceiptConfirm = () => {
     if (!isReadyToDone.value) return
     if (!purchaseId.value) return
     try {
-      await apiClient.purchase.patch({ body: { id: purchaseId.value } })
+      await apiClient.purchase.patch({ body: { id: Number(purchaseId.value) } })
       await apiClient.purchase.delivered.patch({
         body: { id: purchaseId.value }
       })
