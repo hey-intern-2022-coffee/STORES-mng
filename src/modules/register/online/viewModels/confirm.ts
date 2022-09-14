@@ -86,6 +86,8 @@ export const useReceiptConfirm = () => {
     if (!isReadyToDone.value) return
     if (!purchaseId.value) return
     try {
+      // FIXME: promise all
+      // purchase.patch , productIdを投げる仕様でした.  BEに変更リクエスト済み(purchase Idに変更)
       await apiClient.purchase.patch({ body: { id: Number(purchaseId.value) } })
       await apiClient.purchase.delivered.patch({
         body: { id: purchaseId.value }
