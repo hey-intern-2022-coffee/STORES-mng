@@ -47,7 +47,7 @@ export const useReceiptConfirm = () => {
   /**
    * @args: API response
    */
-  const apiResponseToRef = (item: Purchase) => {
+  const productsToGoodsInfo = (item: Purchase) => {
     // FIXME: types
     const userinfoFromResponse: any = {
       name: item.name,
@@ -105,7 +105,7 @@ export const useReceiptConfirm = () => {
       ._purchases_id(purchaseId.value)
       .get()
 
-    const goodsIds = apiResponseToRef(products.body)
+    const goodsIds = productsToGoodsInfo(products.body)
     // FIXME: productIdを投げてproduct情報を返すGETのアクセスパターンが欲しい
     if (!goodsIds) return
     for (let i = 0; i < goodsIds?.length; i++) {
