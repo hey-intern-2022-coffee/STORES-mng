@@ -38,6 +38,8 @@ export type OnlineProducts = Products & {
     sold_quantity?: number | undefined
     /** オンライン商品の在庫 */
     stock_quantity?: number | undefined
+    /** オンライン商品の在庫 */
+    delivered_quantity?: number | undefined
   } | undefined
 }
 
