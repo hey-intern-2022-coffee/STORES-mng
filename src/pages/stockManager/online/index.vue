@@ -11,7 +11,6 @@ const {
   formLabelWidth,
   cancelAddGoods,
   annotation,
-
   imgColumn
 } = useOnlineStockManager()
 </script>
@@ -31,21 +30,19 @@ const {
       <el-table :data="tableData" style="width: 100%" ref="table">
         <el-table-column fixed prop="name" label="商品名" />
         <el-table-column prop="price" label="値段" />
-        <el-table-column prop="image_url" label="画像" ref="imgColumn" />
-        <el-table-column prop="online_stock.stock_quantity" label="在庫数" />
-        <el-table-column prop="online_stock.sold_quantity" label="売上数" />
-        <el-table-column
-          prop="online_stock.delivered_quantity"
-          label="未受け渡し数"
-        />
-        <el-table-column fixed="right" label="">
+        <!-- <el-table-column prop="image_url" label="画像" ref="imgColumn" /> -->
+        <el-table-column prop="stock" label="残り在庫数" />
+        <el-table-column prop="ordersNum" label="注文数" />
+        <el-table-column prop="deliveredNum" label="受渡し済み数" />
+        <el-table-column prop="notDeliveredNum" label="未受け渡し数" />
+        <!-- <el-table-column fixed="right" label="">
           <template #default>
             <el-button link type="primary" size="small" @click="() => false"
               >編集</el-button
             >
-            <!-- <el-button link type="primary" size="small">削除</el-button> -->
+            <el-button link type="primary" size="small">削除</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
     <div class="dialog">

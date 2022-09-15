@@ -84,6 +84,7 @@ const {
 }
 .wrapper {
   justify-content: space-between;
+  width: 100%;
 }
 .user-infos,
 .goods-infos,
@@ -97,7 +98,7 @@ const {
   margin-bottom: 1%;
 }
 .user-infos {
-  width: 35vw;
+  /* width: 35vw; */
   /* align-items: flex-start; */
   /* justify-items: start; */
 }
@@ -106,7 +107,6 @@ const {
   overflow-wrap: break-word;
 }
 .goods-infos {
-  width: 65vw;
 }
 .each-goods {
 }
