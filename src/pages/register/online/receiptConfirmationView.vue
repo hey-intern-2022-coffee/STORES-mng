@@ -5,6 +5,7 @@ import GoodsCardForReceiveView from '@/components/GoodsCardForReceiveView.vue'
 import ButtonWithLoading from '@/components/ButtonWithLoading.vue'
 import { ONLINE_RECEIVED_VIEW } from '../../../modules/register/constant'
 import { useReceiptConfirm } from '../../../modules/register/online/viewModels/confirm'
+import AnnotationDialog from '../../../components/AnnotationDialog.vue'
 
 const {
   purchaseId,
@@ -13,7 +14,9 @@ const {
   isReceivedItems,
   isReadyToDone,
   isLoading,
-  done
+  done,
+  alreadyHasReceipt,
+  backToQrReader
 } = useReceiptConfirm()
 </script>
 
@@ -61,6 +64,13 @@ const {
         />
       </div>
     </div>
+    <AnnotationDialog
+      :dialog-visible="alreadyHasReceipt"
+      :handle-close="backToQrReader"
+      :cancel="backToQrReader"
+      :title="'すでに受け取り済みのユーザーです。'"
+      :continue-btn-text="'戻る'"
+    />
   </div>
 </template>
 <style scoped>

@@ -10,7 +10,9 @@ const {
   form,
   formLabelWidth,
   cancelAddGoods,
-  annotation
+  annotation,
+
+  imgColumn
 } = useOnlineStockManager()
 </script>
 
@@ -26,10 +28,10 @@ const {
       <!-- :is-loading="isLoading" -->
     </div>
     <div class="table-wrapper">
-      <el-table :data="tableData" style="width: 100%">
+      <el-table :data="tableData" style="width: 100%" ref="table">
         <el-table-column fixed prop="name" label="商品名" />
         <el-table-column prop="price" label="値段" />
-        <el-table-column prop="image_url" label="画像" />
+        <el-table-column prop="image_url" label="画像" ref="imgColumn" />
         <el-table-column prop="online_stock.stock_quantity" label="在庫数" />
         <el-table-column prop="online_stock.sold_quantity" label="売上数" />
         <el-table-column
