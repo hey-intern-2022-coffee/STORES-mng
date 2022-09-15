@@ -1,4 +1,5 @@
-import { ref } from 'vue'
+import { useDebounceFn, useEventListener } from '@vueuse/core'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import { OnlineProducts } from '../../../../lib/@types'
 import { apiClient } from '../../../../repos'
 import { useFetch } from '../../../utils/api'
@@ -26,6 +27,7 @@ export const useOnlineStockManager = () => {
     form.value = initForm() // 送信後にformをクリア
     dialogVisible.value = false // Dialogを閉じる
     fetchAllGoods() // データを更新する
+    debouncedFixColumnHeight() // UIの修正
   }
   const cancelAddGoods = () => {
     annotation.value = initAnnotation()
@@ -49,6 +51,17 @@ export const useOnlineStockManager = () => {
   })
 
   const formLabelWidth = '140px'
+  const columnHeight = () => {
+    const elems = document.getElementsByClassName('el-table__cell')
+    for (let i = 0; i < elems.length; i++) {
+      for (let j = 0; j < elems[i].children.length; j++) {
+        elems[i].children[j].setAttribute(
+          'style',
+          'max-height: 5rem;overflow: scroll;'
+        )
+      }
+    }
+  }
 
   const addGoods = async (arg: OnlineProducts) => {
     try {
@@ -78,6 +91,24 @@ export const useOnlineStockManager = () => {
     await fetchAllGoods()
   })
 
+  // FIXME: 秒数撲滅のため, tableUIを自前実装にする必要あり.
+  const debouncedFixColumnHeight = useDebounceFn(
+    () => {
+      columnHeight()
+    },
+    1000,
+    { maxWait: 5000 } // NOTE: debouncedFixColumnHeightの実行を5000secまで待つ(watchの発火を5000secまで待つ)
+  )
+  const imgColumn = ref<HTMLElement>()
+  const suspend = watch(
+    imgColumn,
+    () => {
+      debouncedFixColumnHeight()
+      suspend()
+    },
+    { deep: true }
+  )
+
   return {
     openEditDialog,
     tableData,
@@ -86,6 +117,7 @@ export const useOnlineStockManager = () => {
     form,
     formLabelWidth,
     cancelAddGoods,
-    annotation
+    annotation,
+    imgColumn
   }
 }

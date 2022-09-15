@@ -17,13 +17,18 @@ middleware()
 </template>
 
 <style scoped>
+.root-wrapper {
+  width: 100%; /*ブロックの幅*/
+  height: 93vh; /*ブロックの高さ*/
+  overflow: scroll; /*スクロール*/
+}
+@media screen and (max-width: 460px) {
+  .root-wrapper {
+    height: 90vh; /*ブロックの高さ*/
+  }
+}
 footer {
   position: absolute; /*←絶対位置*/
   bottom: 0; /*下に固定*/
-}
-.root-wrapper {
-  width: 100%; /*ブロックの幅*/
-  height: auto; /*ブロックの高さ*/
-  overflow: scroll; /*スクロール*/
 }
 </style>

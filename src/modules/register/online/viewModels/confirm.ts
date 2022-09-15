@@ -9,7 +9,7 @@ export const useReceiptConfirm = () => {
   const route = useRoute()
   const router = useRouter()
   const purchaseId = computed(() => Number(route.params.purchaseId)) // FIXME: type check
-
+  const alreadyHasReceipt = ref(false)
   const userData = ref<
     {
       key: 'name' | 'purchaseId' | 'email' | 'phoneNumber'
@@ -65,16 +65,9 @@ export const useReceiptConfirm = () => {
   }
 
   // FIXME: responseの購入物品種類数に応じて配列数は変化
-  const isReceivedItems = ref<
-    {
-      isReceived: false
-    }[]
-  >([
-    {
-      isReceived: false
-    }
-  ])
+  const isReceivedItems = ref<{ isReceived: false }[]>([{ isReceived: false }])
 
+  /** 受け取り商品全てにチェックが付いたらtrue */
   const isReadyToDone = computed(
     () =>
       isReceivedItems.value.length &&
@@ -99,11 +92,20 @@ export const useReceiptConfirm = () => {
     // POST
     router.push({ name: 'online-receipt-done' })
   }
+
+  /** QRリーダーに戻る */
+  const backToQrReader = () => {
+    alreadyHasReceipt.value = false
+    router.push({ name: 'online-receipt-qr-reader' })
+  }
+
   /** fetch products */
   useFetch(async () => {
     const products = await apiClient.purchase
       ._purchases_id(purchaseId.value)
       .get()
+    alreadyHasReceipt.value = products.body.is_acceptance ?? false
+    if (alreadyHasReceipt.value) return // 受け取り済み
 
     const goodsIds = productsToGoodsInfo(products.body)
     // FIXME: productIdを投げてproduct情報を返すGETのアクセスパターンが欲しい
@@ -134,6 +136,8 @@ export const useReceiptConfirm = () => {
     isReceivedItems,
     isReadyToDone,
     isLoading,
-    done
+    done,
+    alreadyHasReceipt,
+    backToQrReader
   }
 }

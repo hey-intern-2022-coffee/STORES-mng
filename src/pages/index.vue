@@ -17,9 +17,6 @@ const isLoading = ref({ online: false, offline: false })
 </script>
 <template>
   <div class="wrapper">
-    <div class="titles">
-      <!-- <h1>register</h1> -->
-    </div>
     <div class="btns">
       <div>
         <ButtonWithLoading

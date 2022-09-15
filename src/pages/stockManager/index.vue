@@ -15,35 +15,46 @@ const toOffline = () => {
 <template>
   <div class="wrapper">
     <!-- FIXME: アイコン！ -->
-    <div class="btn-wrapper">
-      <ButtonWithLoading
-        :text="'オンライン在庫管理'"
-        :click-method="toOnline"
-        :custom-style="'width: 50vw;height: auto;'"
-        :is-loading="isLoading"
-        class="btn"
-      />
-    </div>
-    <div class="btn-wrapper">
-      <ButtonWithLoading
-        :text="'オフライン在庫管理'"
-        :click-method="toOffline"
-        :custom-style="'width: 50vw;height: auto;'"
-        :is-loading="isLoading"
-        class="btn"
-      />
+    <div class="btns">
+      <div>
+        <ButtonWithLoading
+          :text="'オンライン在庫管理'"
+          :click-method="toOnline"
+          :custom-style="'width: 50vw;height: auto;'"
+          :is-loading="isLoading"
+          class="btn"
+        />
+      </div>
+      <div>
+        <ButtonWithLoading
+          :text="'オフライン在庫管理'"
+          :click-method="toOffline"
+          :custom-style="'width: 50vw;height: auto;'"
+          :is-loading="isLoading"
+          class="btn"
+        />
+      </div>
     </div>
   </div>
 </template>
 <style scoped>
-.wrapper {
+.btns,
+.titles {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin-top: 3rem;
+}
+.btns {
+  height: 70%;
+}
+.wrapper {
   height: 80vh;
 }
-.btn-wrapper {
-  margin: 1rem;
+
+.btn {
+  margin-top: 7%;
+  margin-bottom: 7%;
 }
 </style>
