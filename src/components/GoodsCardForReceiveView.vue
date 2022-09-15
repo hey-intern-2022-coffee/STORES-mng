@@ -62,7 +62,6 @@ watch(
   margin-left: 1%;
   margin-right: 1%;
   padding-right: 3%;
-  width: 100%;
 }
 .card-content {
   display: flex;
