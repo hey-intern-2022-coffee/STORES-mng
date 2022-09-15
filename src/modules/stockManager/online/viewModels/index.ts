@@ -1,14 +1,31 @@
 import { useDebounceFn, useEventListener } from '@vueuse/core'
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { nextTick, onMounted, Ref, ref, watch } from 'vue'
 import { OnlineProducts } from '../../../../lib/@types'
 import { apiClient } from '../../../../repos'
 import { useFetch } from '../../../utils/api'
-import { Annotation } from '../../types'
-import { initAnnotation, initForm, validation } from '../models'
+import { Annotation, TableDataForOnlineStock } from '../../types'
+import {
+  initAnnotation,
+  initForm,
+  validation,
+  getStockNumerics
+} from '../models'
+import { useUiFix } from './uiFix'
 
 export const useOnlineStockManager = () => {
-  const tableData = ref<OnlineProducts[]>()
+  // const tableData = ref<OnlineProducts[]>()
+  const allProducts = ref<OnlineProducts[]>()
+  const tableData = ref<TableDataForOnlineStock[]>()
+
   const dialogVisible = ref(false)
+  const {
+    formLabelWidth,
+    columnHeight,
+    debouncedFixColumnHeight,
+    imgColumn,
+    suspend
+  } = useUiFix()
+
   const openEditDialog = () => {
     dialogVisible.value = true
   }
@@ -26,7 +43,7 @@ export const useOnlineStockManager = () => {
     await sendGoodsInfo()
     form.value = initForm() // 送信後にformをクリア
     dialogVisible.value = false // Dialogを閉じる
-    fetchAllGoods() // データを更新する
+    setDataToTable() // データを更新する
     debouncedFixColumnHeight() // UIの修正
   }
   const cancelAddGoods = () => {
@@ -50,19 +67,6 @@ export const useOnlineStockManager = () => {
     online_stock: false // FIXME: 型修正(本当はネストした中でboolを持ちたい)
   })
 
-  const formLabelWidth = '140px'
-  const columnHeight = () => {
-    const elems = document.getElementsByClassName('el-table__cell')
-    for (let i = 0; i < elems.length; i++) {
-      for (let j = 0; j < elems[i].children.length; j++) {
-        elems[i].children[j].setAttribute(
-          'style',
-          'max-height: 5rem;overflow: scroll;'
-        )
-      }
-    }
-  }
-
   const addGoods = async (arg: OnlineProducts) => {
     try {
       await apiClient.products.post({
@@ -79,35 +83,31 @@ export const useOnlineStockManager = () => {
       console.error(e)
     }
   }
-  const fetchAllGoods = async () => {
+  const fetchAllGoods = async (arg: Ref<OnlineProducts[] | undefined>) => {
     try {
       const res = await apiClient.onlinestore.allproducts.get()
-      tableData.value = res.body
+      // tableData.value = res.body
+      arg.value = res.body
     } catch (e) {
       console.error(e)
     }
   }
-  useFetch(async () => {
-    await fetchAllGoods()
-  })
+  const setDataToTable = async () => {
+    await fetchAllGoods(allProducts)
+    console.debug(allProducts)
 
-  // FIXME: 秒数撲滅のため, tableUIを自前実装にする必要あり.
-  const debouncedFixColumnHeight = useDebounceFn(
-    () => {
-      columnHeight()
-    },
-    1000,
-    { maxWait: 5000 } // NOTE: debouncedFixColumnHeightの実行を5000secまで待つ(watchの発火を5000secまで待つ)
-  )
-  const imgColumn = ref<HTMLElement>()
-  const suspend = watch(
-    imgColumn,
-    () => {
-      debouncedFixColumnHeight()
-      suspend()
-    },
-    { deep: true }
-  )
+    tableData.value = allProducts.value?.map(it => {
+      const data = getStockNumerics({ online_stock: it.online_stock })
+      return Object.assign(
+        { productId: it.id, name: it.name, price: it.price },
+        data
+      )
+    })
+    console.debug(tableData.value)
+  }
+  useFetch(async () => {
+    await setDataToTable()
+  })
 
   return {
     openEditDialog,

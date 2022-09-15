@@ -34,7 +34,7 @@ watch(
         </div>
         <div class="end">
           <div>数量: {{ item.count }}</div>
-          <div class="shop-name">販売元: {{ item.shopName }}</div>
+          <!-- <div class="shop-name">販売元: {{ item.shopName }}</div> -->
         </div>
         <div class="switches">
           <el-switch
@@ -62,6 +62,7 @@ watch(
   margin-left: 1%;
   margin-right: 1%;
   padding-right: 3%;
+  width: 100%;
 }
 .card-content {
   display: flex;
