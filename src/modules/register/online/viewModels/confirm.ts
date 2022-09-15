@@ -4,6 +4,7 @@ import { Purchase } from '../../../../lib/@types'
 
 import { apiClient } from '../../../../repos'
 import { useFetch } from '../../../utils/api'
+import { productsToGoodsInfo } from '../model'
 
 export const useReceiptConfirm = () => {
   const route = useRoute()
@@ -36,6 +37,7 @@ export const useReceiptConfirm = () => {
   // NOTE: BEから取れる値
   const goodsInfo = ref<
     {
+      productId: number
       title: string
       count: number
       price: number
@@ -44,25 +46,25 @@ export const useReceiptConfirm = () => {
       shopName: string
     }[]
   >([])
-  /**
-   * @args: API response
-   */
-  const productsToGoodsInfo = (item: Purchase) => {
-    // FIXME: types
-    const userinfoFromResponse: any = {
-      name: item.name,
-      purchaseId: item.id,
-      email: item.mail_address
-    }
-    // NOTE: 左側表示のユーザーデータ
-    userData.value.map(it => {
-      it.data = userinfoFromResponse[it.key]
-    })
-    const goodsInfo = item.purchases_products?.map(it => ({
-      productId: it.product_id
-    }))
-    return goodsInfo
-  }
+  // /**
+  //  * @args: API response
+  //  */
+  // const productsToGoodsInfo = (item: Purchase) => {
+  //   // FIXME: types
+  //   const userinfoFromResponse: any = {
+  //     name: item.name,
+  //     purchaseId: item.id,
+  //     email: item.mail_address
+  //   }
+  //   // NOTE: 左側表示のユーザーデータ
+  //   userData.value.map(it => {
+  //     it.data = userinfoFromResponse[it.key]
+  //   })
+  //   const goodsInfo = item.purchases_products?.map(it => ({
+  //     productId: it.product_id
+  //   }))
+  //   return goodsInfo
+  // }
 
   // FIXME: responseの購入物品種類数に応じて配列数は変化
   const isReceivedItems = ref<{ isReceived: false }[]>([{ isReceived: false }])
@@ -104,24 +106,36 @@ export const useReceiptConfirm = () => {
     const products = await apiClient.purchase
       ._purchases_id(purchaseId.value)
       .get()
+
     alreadyHasReceipt.value = products.body.is_acceptance ?? false
     if (alreadyHasReceipt.value) return // 受け取り済み
 
-    const goodsIds = productsToGoodsInfo(products.body)
-    // FIXME: productIdを投げてproduct情報を返すGETのアクセスパターンが欲しい
+    const goodsIds = productsToGoodsInfo(products.body, userData)
+
+    //  FIXME: ロジック分離
     if (!goodsIds) return
     for (let i = 0; i < goodsIds?.length; i++) {
       const res = await apiClient.products
         ._product_id(Number(goodsIds[i].productId))
         .get()
-      goodsInfo.value.push({
-        title: res.body.name,
-        count: 1,
-        price: res.body.price ?? 0,
-        image_url: res.body.image_url ?? '',
-        receive: '現地',
-        shopName: '決め打ち.com'
-      })
+      const t = ref(0)
+      for (let it of goodsInfo.value) {
+        if (it.productId === res.body.id) {
+          t.value = res.body.id
+          it.count++
+        }
+      }
+      if (!t.value) {
+        goodsInfo.value.push({
+          productId: res.body.id ?? 0,
+          title: res.body.name,
+          count: 1,
+          price: res.body.price ?? 0,
+          image_url: res.body.image_url ?? '',
+          receive: '現地',
+          shopName: '決め打ち.com'
+        })
+      }
     }
     // FIXME: ロジック分離
     isReceivedItems.value = [...new Array(goodsInfo.value.length)].map(it => ({
