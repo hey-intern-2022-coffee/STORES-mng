@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import GoodsCardForReceiveView from '@/components/GoodsCardForReceiveView.vue'
 import ButtonWithLoading from '@/components/ButtonWithLoading.vue'
 import { ONLINE_RECEIVED_VIEW } from '../../../modules/register/constant'
@@ -31,47 +29,47 @@ const {
       </li>
     </ul>
   </div>
-  <div class="wrapper">
-    <div class="user-infos">
-      <div class="table">
-        <table>
-          <tr v-for="item in userData">
-            <td>{{ item.label }}</td>
-            <td>{{ item.data }}</td>
-          </tr>
-        </table>
-      </div>
+  <!-- <div class="wrapper"> -->
+  <div class="user-infos">
+    <div class="table">
+      <table>
+        <tr v-for="item in userData">
+          <td>{{ item.label }}</td>
+          <td>{{ item.data }}</td>
+        </tr>
+      </table>
     </div>
-    <div class="goods-info">
-      <span v-for="(item, index) in goodsInfo">
-        <GoodsCardForReceiveView
-          :item="item"
-          :style="'width: 100%;'"
-          class="each-goods"
-          v-model="isReceivedItems[index].isReceived"
-        />
-      </span>
-      <div class="btn">
-        <ButtonWithLoading
-          :text="'受け取り完了'"
-          :click-method="done"
-          :custom-style="
-            isReadyToDone
-              ? 'width: 25vw;height: 5vh;'
-              : 'width: 25vw;height: 5vh;background-color:gray;'
-          "
-          :is-loading="isLoading"
-        />
-      </div>
-    </div>
-    <AnnotationDialog
-      :dialog-visible="alreadyHasReceipt"
-      :handle-close="backToQrReader"
-      :cancel="backToQrReader"
-      :title="'すでに受け取り済みのユーザーです。'"
-      :continue-btn-text="'戻る'"
-    />
   </div>
+  <div class="goods-info">
+    <span v-for="(item, index) in goodsInfo">
+      <GoodsCardForReceiveView
+        :item="item"
+        :style="'width: 100%;'"
+        class="each-goods"
+        v-model="isReceivedItems[index].isReceived"
+      />
+    </span>
+    <div class="btn">
+      <ButtonWithLoading
+        :text="'受け取り完了'"
+        :click-method="done"
+        :custom-style="
+          isReadyToDone
+            ? 'width: 25vw;height: 5vh;'
+            : 'width: 25vw;height: 5vh;background-color:gray;'
+        "
+        :is-loading="isLoading"
+      />
+    </div>
+  </div>
+  <AnnotationDialog
+    :dialog-visible="alreadyHasReceipt"
+    :handle-close="backToQrReader"
+    :cancel="backToQrReader"
+    :title="'すでに受け取り済みのユーザーです。'"
+    :continue-btn-text="'戻る'"
+  />
+  <!-- </div> -->
 </template>
 <style scoped>
 .wrapper,
@@ -84,7 +82,6 @@ const {
 }
 .wrapper {
   justify-content: space-between;
-  width: 100%;
 }
 .user-infos,
 .goods-infos,
@@ -107,6 +104,7 @@ const {
   overflow-wrap: break-word;
 }
 .goods-infos {
+  width: 100%;
 }
 .each-goods {
 }
