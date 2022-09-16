@@ -38,35 +38,15 @@ export const menus: bottomMenuElement[] = [
     id: 0,
     label: 'ホーム',
     pathName: 'home'
-    // iconSrc: HomeSvg,
-    // activeIconSrc: ActiveHomeSvg
   } as const,
   {
     id: 1,
     label: 'レジ',
     pathName: 'register'
-    // iconSrc: SearchSvg,
-    // activeIconSrc: SearchSvg
   } as const,
   {
     id: 2,
     label: '在庫管理',
     pathName: 'online-offline'
-    // iconSrc: GoOutSvg,
-    // activeIconSrc: GoOutSvg
   } as const
-  // {
-  //   id: 3,
-  //   label: 'やりとり',
-  //   path: '/message-list'
-  //   // iconSrc: MessageSvg,
-  //   // activeIconSrc: ActiveMessageSvg
-  // } as const,
-  // {
-  //   id: 4,
-  //   label: 'マイページ',
-  //   path: '/my-page'
-  //   // iconSrc: MyPageSvg,
-  //   // activeIconSrc: ActiveMyPageSvg
-  // } as const
 ]

@@ -46,25 +46,6 @@ export const useReceiptConfirm = () => {
       shopName: string
     }[]
   >([])
-  // /**
-  //  * @args: API response
-  //  */
-  // const productsToGoodsInfo = (item: Purchase) => {
-  //   // FIXME: types
-  //   const userinfoFromResponse: any = {
-  //     name: item.name,
-  //     purchaseId: item.id,
-  //     email: item.mail_address
-  //   }
-  //   // NOTE: 左側表示のユーザーデータ
-  //   userData.value.map(it => {
-  //     it.data = userinfoFromResponse[it.key]
-  //   })
-  //   const goodsInfo = item.purchases_products?.map(it => ({
-  //     productId: it.product_id
-  //   }))
-  //   return goodsInfo
-  // }
 
   // FIXME: responseの購入物品種類数に応じて配列数は変化
   const isReceivedItems = ref<{ isReceived: false }[]>([{ isReceived: false }])

@@ -4,12 +4,20 @@ import { useRouter } from 'vue-router'
 import ButtonWithLoading from '@/components/ButtonWithLoading.vue'
 
 const router = useRouter()
-const isLoading = ref(false)
+const isLoadingToOffline = ref(false)
 const toOnline = () => {
+  isLoadingToOnline.value = true
   router.push({ name: 'online' })
 }
+const isLoadingToOnline = ref(false)
 const toOffline = () => {
+  isLoadingToOffline.value = true
   router.push({ name: 'offline' })
+}
+const isLoadingToOrder = ref(false)
+const toOrder = () => {
+  isLoadingToOrder.value = true
+  router.push({ name: 'order' })
 }
 </script>
 <template>
@@ -21,7 +29,7 @@ const toOffline = () => {
           :text="'オンライン在庫管理'"
           :click-method="toOnline"
           :custom-style="'width: 50vw;height: auto;'"
-          :is-loading="isLoading"
+          :is-loading="isLoadingToOnline"
           class="btn"
         />
       </div>
@@ -30,7 +38,16 @@ const toOffline = () => {
           :text="'オフライン在庫管理'"
           :click-method="toOffline"
           :custom-style="'width: 50vw;height: auto;'"
-          :is-loading="isLoading"
+          :is-loading="isLoadingToOffline"
+          class="btn"
+        />
+      </div>
+      <div>
+        <ButtonWithLoading
+          :text="'注文情報'"
+          :click-method="toOrder"
+          :custom-style="'width: 50vw;height: auto;'"
+          :is-loading="isLoadingToOrder"
           class="btn"
         />
       </div>

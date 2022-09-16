@@ -52,6 +52,14 @@ const routes: RouteRecordRaw[] = [
           import(
             /* webpackChunkName: "stock-manager" */ '@/pages/stockManager/offline/index.vue'
           )
+      },
+      {
+        path: 'order',
+        name: 'order',
+        component: () =>
+          import(
+            /* webpackChunkName: "stock-manager" */ '@/pages/stockManager/order/index.vue'
+          )
       }
     ]
   },
